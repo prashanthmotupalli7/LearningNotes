@@ -1,0 +1,62 @@
+Java OutOfMemoryError: Types, Causes, and Solutions
+
+
+1. Java Heap Space
+Cause:Application traffic increase.
+Memory leak (e.g., HashMap holding excessive data).
+Solution:Fix memory leaks in the code.
+Increase JVM heap size using the -Xmx parameter.
+Artifacts:Garbage collection (GC) logs.
+Heap dumps.
+Tools:GCViewer to analyze GC logs.
+Eclipse MAT for heap dump analysis.
+
+2. GC Overhead Limit Exceeded
+Cause:Similar to "Heap Space" but triggered when the garbage collector spends too much time.
+Solution:Analyze GC logs and heap dumps.
+Fix underlying memory issues or increase heap size.
+Key Point:Often occurs alongside heap space errors.
+
+3. Requested Array Size Exceeds VM Limit
+Cause:Array creation request exceeds available heap memory.
+Solution:Validate and optimize array size requirements.
+Increase the -Xmx parameter if needed.
+Key Indicator:Stack trace explicitly shows the error source.
+
+4. Metaspace
+Cause:Excessive class definitions loaded (e.g., third-party libraries, dynamic class creation via Groovy).
+Solution:Increase Metaspace size using -XX:MaxMetaspaceSize.
+Fix issues causing dynamic class creation.
+Enable logging with -verbose:class or -Xlog:class+load (Java 9+).
+Key Indicator:Repeated full GC cycles in the GC log, even at low usage.
+
+5. PermGen Space
+Cause:(Java 7 or earlier) Too many class definitions loaded into the Permanent Generation.
+Solution:Similar to Metaspace troubleshooting.
+Note: Obsolete in Java 8+ (replaced by Metaspace).
+
+6. Unable to Create New Native Threads
+Cause:Excessive thread creation or hitting OS thread limits.
+Solution:Capture a thread dump to analyze thread usage.
+Fix thread leaks or optimize thread usage.
+Increase OS thread limits (ulimit settings in Linux).
+Key Tool:Use FastThread or text editors for thread dump analysis.
+
+7. Direct Buffer Memory
+Cause:Exhaustion of direct buffer space (e.g., large ByteBuffer allocations).
+Solution:Optimize code to reduce buffer usage.
+Increase -XX:MaxDirectMemorySize.
+Consider upgrading to Java 17 for improved buffer management.
+Key Point:Stack trace highlights the error source.
+
+8. Kill Process or Sacrifice Child
+Cause:Kernel kills JVM due to insufficient RAM (common in containerized environments).
+Solution:Check kernel logs (dmesg) for termination evidence.
+Allocate more memory to containers or optimize memory usage.
+Case Study:AWS Elastic Beanstalk application faced intermittent 502 errors due to Tomcat processes being killed and restarted by the orchestrator.
+
+Key Takeaways
+Memory Debugging:Use appropriate tools: GC logs, heap dumps, thread dumps, or kernel logs depending on the error type.
+Preventive Measures:Monitor application performance and memory usage.
+Optimize code for handling large-scale traffic or dynamic object creation.
+Notes completed Anything left 
