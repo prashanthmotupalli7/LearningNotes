@@ -1,0 +1,27 @@
+
+# To get Employee data map by their city  
+
+Map<String,List<Empolyee>> empMap= empList.stream().collect(Collectors.groupingBy(Employee::getCity);
+
+# To get 3rd highest salary 
+
+Optional<Double> thirdhighestSalary = empList.stream().map(Employee::getSalary).distinct().sorted((a,b) -> Double.compar(b,a)).skip(2).findFirst();
+
+#To get Employee detaiils of an employee
+
+Optional<Employee>  fifthHighestSalary = employee.stream().sorted(Comparator.comparing(Employee::getSalary).reversed()).distinct().skip(4).findFirst();
+
+
+
+# sorting employee details in reverse  order 
+
+List<Employee> sortedEmployees = employees.stream()
+                .sorted(Comparator.comparing(Employee::getSalary).reversed()) 
+                .collect(Collectors.toList());
+
+
+#sorting an employee by department and salary reversorder
+List<Employee> sortedEmployees = employees.stream()
+                .sorted(Comparator.comparing(Employee::getDepartment)  
+                        .thenComparing(Employee::getSalary, Comparator.reverseOrder()))  
+                .collect(Collectors.toList());
